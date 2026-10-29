@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Javier Sánchez · Full-stack Developer</title>
+<meta name="description" content="Portafolio de Javier Sánchez, desarrollador full-stack especializado en Angular, NestJS, Docker e IA generativa con LLMs.">
+<meta name="color-scheme" content="dark light">
+<script>
+  /* Tema e idioma antes del primer pintado: sin parpadeo. */
+  (function () {
+    var d = document.documentElement, t, l;
+    d.classList.add('js');
+    try { t = localStorage.getItem('theme'); l = localStorage.getItem('lang'); } catch (e) {}
+    var q = new URLSearchParams(location.search).get('lang');
+    if (q === 'en' || q === 'es') l = q;
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    d.setAttribute('data-theme', t);
+    d.lang = l === 'en' ? 'en' : 'es';
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #0b1120;
+    --surface: #111a2e;
+    --surface-2: #17223a;
+    --text: #e2e8f0;
+    --heading: #f8fafc;
+    --muted: #9fb0c8;
+    --border: #23314d;
+    --accent: #60a5fa;
+    --accent-2: #2dd4bf;
+    --on-accent: #0b1120;
+    --tag-bg: rgba(96, 165, 250, .12);
+    --tag-text: #bfdbfe;
+    --tag-2-bg: rgba(45, 212, 191, .12);
+    --tag-2-text: #99f6e4;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+    --code-bg: #0a0f1c;
+    --code-text: #cbd5e1;
+    --code-key: #93c5fd;
+    --code-str: #5eead4;
+    --code-com: #8b9bb4;
+    --header-bg: rgba(11, 17, 32, .82);
+    --radius: 14px;
+    --max: 1100px;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6f8fb; --surface: #ffffff; --surface-2: #eef2f7; --text: #1e293b; --heading: #0f172a;
+      --muted: #475569; --border: #dbe3ee; --accent: #2563eb; --accent-2: #0f766e; --on-accent: #ffffff;
+      --tag-bg: #e8f0fe; --tag-text: #1d4ed8; --tag-2-bg: #e0f5f1; --tag-2-text: #0f5f58;
+      --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+      --code-bg: #0f172a; --header-bg: rgba(246, 248, 251, .85);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f8fb; --surface: #ffffff; --surface-2: #eef2f7; --text: #1e293b; --heading: #0f172a;
+    --muted: #475569; --border: #dbe3ee; --accent: #2563eb; --accent-2: #0f766e; --on-accent: #ffffff;
+    --tag-bg: #e8f0fe; --tag-text: #1d4ed8; --tag-2-bg: #e0f5f1; --tag-2-text: #0f5f58;
+    --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+    --code-bg: #0f172a; --header-bg: rgba(246, 248, 251, .85);
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  /* Evita ver el español un instante cuando se carga en inglés. */
+  html[lang="en"]:not(.i18n-ready) body { visibility: hidden; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 400 1rem/1.65 var(--font);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { color: var(--heading); line-height: 1.2; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  ul { margin: 0; padding: 0; }
+  img { max-width: 100%; display: block; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .skip-link {
+    position: absolute; left: 16px; top: -100px; z-index: 100;
+    background: var(--accent); color: var(--on-accent); padding: .6rem 1rem;
+    border-radius: 8px; font-weight: 600; text-decoration: none;
+  }
+  .skip-link:focus { top: 12px; }
+  .icon { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* Cabecera y menú */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--header-bg); border-bottom: 1px solid var(--border);
+    -webkit-backdrop-filter: saturate(160%) blur(10px); backdrop-filter: saturate(160%) blur(10px);
+  }
+  .site-header .header-inner { display: flex; align-items: center; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+  .brand { font-weight: 700; color: var(--heading); text-decoration: none; letter-spacing: -.01em; margin-right: auto; }
+  .brand span { color: var(--accent-2); }
+  .nav-list { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+  .nav-list a {
+    display: block; padding: .4rem .7rem; border-radius: 8px;
+    color: var(--muted); text-decoration: none; font-size: .925rem; font-weight: 600;
+  }
+  .nav-list a:hover { color: var(--heading); background: var(--surface-2); }
+  .nav-list a[aria-current="true"] { color: var(--accent); background: var(--tag-bg); }
+  .tools { display: flex; gap: 6px; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    min-width: 40px; height: 40px; padding: 0 10px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--surface); color: var(--heading);
+    font: 600 .85rem var(--font); cursor: pointer;
+  }
+  .icon-btn:hover { border-color: var(--accent); }
+  /* Se muestra el icono del tema al que se cambia. */
+  :root[data-theme="light"] .theme-btn .i-sun, :root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+  .menu-btn, html:not(.js) .js-only { display: none; }
+
+  @media (max-width: 720px) {
+    html.js .menu-btn { display: inline-flex; }
+    html.js .site-nav { order: 3; width: 100%; display: none; }
+    html.js .site-nav.is-open { display: block; }
+    html.js .nav-list { flex-direction: column; }
+    html.js .nav-list a { padding: .7rem .8rem; }
+    html:not(.js) .site-nav { order: 3; width: 100%; }
+  }
+
+  /* Secciones */
+  section { padding: 88px 0; scroll-margin-top: 64px; }
+  section + section { border-top: 1px solid var(--border); }
+  .eyebrow {
+    display: inline-block; font: 600 .8rem var(--mono); color: var(--accent-2);
+    letter-spacing: .04em; margin-bottom: 10px;
+  }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: -.02em; margin-bottom: 12px; }
+  .section-lead { color: var(--muted); max-width: 62ch; margin-bottom: 40px; }
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px; box-shadow: var(--shadow);
+  }
+  .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+  .tags li {
+    font-size: .8rem; font-weight: 600; padding: .25rem .65rem; border-radius: 999px;
+    background: var(--tag-bg); color: var(--tag-text);
+  }
+  .tags.alt li { background: var(--tag-2-bg); color: var(--tag-2-text); }
+
+  /* Portada */
+  .hero { padding: 96px 0 88px; }
+  .hero-grid { display: grid; gap: 48px; grid-template-columns: 1.15fr .85fr; align-items: center; }
+  .hero-id { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }
+  .avatar {
+    position: relative; width: 88px; height: 88px; flex: none; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.6rem;
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent-2);
+  }
+  .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .status { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: .9rem; }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 0 4px var(--tag-2-bg); }
+  .hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.6rem); letter-spacing: -.03em; margin-bottom: 14px; }
+  .hero h1 .name { color: var(--accent); }
+  .hero-role { font-size: 1.2rem; font-weight: 600; color: var(--heading); margin-bottom: 14px; }
+  .hero-text { color: var(--muted); font-size: 1.075rem; max-width: 52ch; margin-bottom: 30px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: .75rem 1.2rem;
+    border-radius: 10px; font-weight: 600; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { border-color: var(--border); color: var(--heading); background: var(--surface); }
+  .btn-ghost:hover { border-color: var(--accent); }
+  .code {
+    background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+  }
+  .code-bar { display: flex; gap: 7px; padding: 12px 16px; border-bottom: 1px solid rgba(148, 163, 184, .15); }
+  .code-bar span { width: 11px; height: 11px; border-radius: 50%; background: #475569; }
+  .code-bar span:nth-child(1) { background: #f87171; }
+  .code-bar span:nth-child(2) { background: #fbbf24; }
+  .code-bar span:nth-child(3) { background: #34d399; }
+  .code pre {
+    margin: 0; padding: 20px; font: .875rem/1.75 var(--mono);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .code .k { color: var(--code-key); }
+  .code .s { color: var(--code-str); }
+  .code .c { color: var(--code-com); }
+  .cursor { display: inline-block; width: .55em; height: 1.1em; vertical-align: -.2em; background: var(--code-str); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Sobre mí */
+  .about-grid { display: grid; gap: 40px; grid-template-columns: 1.4fr 1fr; align-items: start; }
+  .about-text p + p { margin-top: 16px; }
+  .facts { list-style: none; display: grid; gap: 14px; }
+  .facts li { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed var(--border); padding-bottom: 12px; }
+  .facts li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .facts span:first-child { color: var(--muted); }
+  .facts span:last-child { font-weight: 600; color: var(--heading); text-align: right; }
+
+  /* Skills */
+  .skill-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .skill-icon {
+    width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+    background: var(--tag-bg); color: var(--accent);
+  }
+  .skill-head h3 { margin: 0; }
+  .soft { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .soft h3 { font-size: 1rem; margin: 0; }
+
+  /* Experiencia */
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 24px; }
+  .timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+  .timeline > li { position: relative; padding-left: 36px; }
+  .timeline > li::before {
+    content: ""; position: absolute; left: 0; top: 28px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--accent);
+  }
+  .timeline > li:first-child::before { border-color: var(--accent-2); background: var(--accent-2); }
+  .job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-bottom: 4px; }
+  .job-meta { color: var(--muted); font-size: .9rem; margin-bottom: 14px; }
+  .job-date { font: 600 .85rem var(--mono); color: var(--accent-2); white-space: nowrap; }
+  .bullets { padding-left: 1.1rem; margin-bottom: 18px; }
+  .bullets li + li { margin-top: 6px; }
+  .bullets li::marker { color: var(--accent); }
+
+  /* Proyectos */
+  .group-title { font-size: 1rem; color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+  .group-title + .grid { margin-bottom: 40px; }
+  .project { display: flex; flex-direction: column; gap: 12px; }
+  .project p { color: var(--muted); }
+  .project .tags { margin-top: auto; padding-top: 4px; }
+  .project-kicker { font: 600 .78rem var(--mono); color: var(--accent-2); text-transform: uppercase; letter-spacing: .05em; }
+  .links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 600; font-size: .925rem; }
+  .links a { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Formación */
+  .edu { list-style: none; display: grid; gap: 14px; }
+  .edu li { display: grid; grid-template-columns: 150px 1fr; gap: 6px 20px; align-items: baseline; }
+  .edu .job-date { white-space: normal; }
+  .edu h3 { font-size: 1.025rem; }
+  .edu p { color: var(--muted); font-size: .95rem; }
+
+  /* Contacto */
+  .contact-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .contact-card {
+    display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text);
+    transition: border-color .2s, transform .2s;
+  }
+  .contact-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .contact-card strong { display: block; color: var(--heading); }
+  .contact-card span.val { color: var(--muted); font-size: .9rem; word-break: break-all; }
+  .site-footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: .9rem; }
+
+  /* Aparición de secciones: solo con JS, el contenido nunca depende de ello. */
+  html.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  html.js .reveal.is-visible { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .about-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .container { padding: 0 16px; }
+    section { padding: 64px 0; }
+    .hero { padding: 56px 0 64px; }
+    .grid { grid-template-columns: 1fr; }
+    .edu li { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html.js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/><path d="M19 3v4M21 5h-4"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">Saltar al contenido</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#inicio">javier<span>.dev</span></a>
+    <nav class="site-nav" id="site-nav" aria-label="Principal" data-i18n-attr="aria-label:nav.label">
+      <ul class="nav-list">
+        <li><a href="#sobre-mi" data-i18n="nav.about">Sobre mí</a></li>
+        <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+        <li><a href="#experiencia" data-i18n="nav.experience">Experiencia</a></li>
+        <li><a href="#proyectos" data-i18n="nav.projects">Proyectos</a></li>
+        <li><a href="#formacion" data-i18n="nav.education">Formación</a></li>
+        <li><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="tools js-only">
+      <button class="icon-btn lang-btn" type="button" aria-label="Switch to English" data-i18n-attr="aria-label:tools.lang" lang="en"><span aria-hidden="true" data-i18n="tools.langShort">EN</span></button>
+      <button class="icon-btn theme-btn" type="button" aria-label="Cambiar tema de color" data-i18n-attr="aria-label:tools.theme" aria-pressed="false">
+        <svg class="icon i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="icon i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú" data-i18n-attr="aria-label:tools.menu">
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <section class="hero" id="inicio" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-id">
+          <div class="avatar" aria-hidden="true">JS<img src="data:image/webp;base64,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" width="240" height="240" alt="" onerror="this.remove()"></div>
+          <p class="status" data-i18n="hero.status">Software Developer en CLAUGER · Madrid</p>
+        </div>
+        <h1 id="hero-title"><span data-i18n="hero.hello">Hola, soy</span> <span class="name">Javier Sánchez</span></h1>
+        <p class="hero-role" data-i18n="hero.role">Full-stack Developer · IA generativa</p>
+        <p class="hero-text" data-i18n="hero.text">Construyo aplicaciones web escalables y seguras con Angular, React, NestJS y Docker, y llevo los LLMs como Claude a productos reales: asistentes, agentes y automatización de procesos.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#proyectos"><span data-i18n="hero.ctaProjects">Ver proyectos</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#contacto" data-i18n="hero.ctaContact">Contactar</a>
+        </div>
+      </div>
+      <div class="code" aria-hidden="true">
+        <div class="code-bar"><span></span><span></span><span></span></div>
+<pre><span class="c">// developer.ts</span>
+<span class="k">const</span> javier = {
+  role: <span class="s">'Full-stack Developer'</span>,
+  location: <span class="s">'Madrid, ES'</span>,
+  frontend: [<span class="s">'Angular'</span>, <span class="s">'React'</span>, <span class="s">'TypeScript'</span>],
+  backend: [<span class="s">'NestJS'</span>, <span class="s">'Spring Boot'</span>, <span class="s">'Laravel'</span>],
+  ai: [<span class="s">'Claude'</span>, <span class="s">'LLMs'</span>, <span class="s">'Agents'</span>],
+  devops: [<span class="s">'Docker'</span>, <span class="s">'CI/CD'</span>],
+  coffee: <span class="k">true</span>,
+};<span class="cursor"></span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre-mi" aria-labelledby="about-title">
+    <div class="container about-grid reveal">
+      <div class="about-text">
+        <span class="eyebrow">01 · about</span>
+        <h2 class="section-title" id="about-title" data-i18n="about.title">Sobre mí</h2>
+        <p data-i18n="about.p1">Soy desarrollador de software y he participado en todas las fases del ciclo de vida: análisis, diseño, desarrollo, pruebas, despliegue y mantenimiento en producción.</p>
+        <p data-i18n="about.p2">Me importan el código limpio, la automatización y la seguridad. Monto pipelines CI/CD, reviso la calidad antes de cada release y diseño soluciones que crecen con el negocio.</p>
+        <p data-i18n="about.p3">Fuera del código soy árbitro de fútbol de la RFEF desde 2021: tomar decisiones rápidas bajo presión y trabajar en equipo también se entrena en el campo.</p>
+      </div>
+      <div class="card">
+        <ul class="facts">
+          <li><span data-i18n="about.f.location">Ubicación</span><span>Madrid, España</span></li>
+          <li><span data-i18n="about.f.role">Puesto actual</span><span>Software Developer · CLAUGER</span></li>
+          <li><span data-i18n="about.f.exp">Experiencia</span><span data-i18n="about.f.expVal">+3 años en desarrollo</span></li>
+          <li><span data-i18n="about.f.focus">Enfoque</span><span data-i18n="about.f.focusVal">Full-stack e IA generativa</span></li>
+          <li><span data-i18n="about.f.langs">Idiomas</span><span data-i18n="about.f.langsVal">Español nativo · Inglés profesional</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" aria-labelledby="skills-title">
+    <div class="container reveal">
+      <span class="eyebrow">02 · skills</span>
+      <h2 class="section-title" id="skills-title" data-i18n="skills.title">Skills</h2>
+      <p class="section-lead" data-i18n="skills.lead">Tecnologías con las que trabajo a diario, agrupadas por área.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-layout"/></svg></span><h3>Frontend</h3></div>
+          <ul class="tags"><li>Angular</li><li>React</li><li>TypeScript</li><li>JavaScript</li><li>HTML y CSS</li><li>Angular Material</li><li>RxJS</li></ul>
+        </article>
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span><h3>Backend</h3></div>
+          <ul class="tags"><li>NestJS</li><li>Node.js</li><li>Spring Boot</li><li>Java</li><li>Laravel</li><li>PHP</li><li data-i18n="skills.rest">APIs REST</li><li data-i18n="skills.micro">Microservicios</li></ul>
+        </article>
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg></span><h3 data-i18n="skills.ai">IA generativa</h3></div>
+          <ul class="tags"><li>Claude (Anthropic)</li><li>GPT</li><li>LLMs</li><li data-i18n="skills.agents">Agentes de IA</li><li data-i18n="skills.skills">Skills y workflows</li><li data-i18n="skills.tokens">Optimización de tokens</li></ul>
+        </article>
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-db"/></svg></span><h3 data-i18n="skills.data">Datos</h3></div>
+          <ul class="tags"><li>PostgreSQL</li><li>SQL</li><li>Spring Data JPA</li><li data-i18n="skills.model">Modelado de datos</li></ul>
+        </article>
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-box"/></svg></span><h3>DevOps</h3></div>
+          <ul class="tags"><li>Docker</li><li>CI/CD</li><li>Jenkins</li><li>TeamCity</li><li>GitHub Actions</li><li>Git</li><li>Nginx</li></ul>
+        </article>
+        <article class="card">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span><h3 data-i18n="skills.testing">Testing y calidad</h3></div>
+          <ul class="tags"><li>Cypress</li><li>Jasmine</li><li>SonarQube</li><li data-i18n="skills.audits">Auditorías de seguridad</li><li>Clean Code</li></ul>
+        </article>
+      </div>
+      <div class="card soft">
+        <h3 data-i18n="skills.soft">Habilidades personales</h3>
+        <ul class="tags alt">
+          <li data-i18n="skills.s1">Trabajo bajo presión</li>
+          <li data-i18n="skills.s2">Toma de decisiones</li>
+          <li data-i18n="skills.s3">Trabajo en equipo</li>
+          <li>Scrum</li>
+          <li data-i18n="skills.s4">Visión de producto</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia" aria-labelledby="exp-title">
+    <div class="container reveal">
+      <span class="eyebrow">03 · experience</span>
+      <h2 class="section-title" id="exp-title" data-i18n="exp.title">Experiencia</h2>
+      <p class="section-lead" data-i18n="exp.lead">Proyectos de empresa en energía, educación e industria, siempre de punta a punta.</p>
+      <ol class="timeline">
+        <li>
+          <article class="card">
+            <div class="job-head"><h3>Software Developer · CLAUGER</h3><span class="job-date" data-i18n="exp.d1">may. 2026 – actualidad</span></div>
+            <p class="job-meta">Madrid · <span data-i18n="exp.m1">Full-stack e IA</span></p>
+            <ul class="bullets">
+              <li data-i18n="exp.c1">Integro IA generativa y LLMs (Claude, de Anthropic) en productos y procesos internos.</li>
+              <li data-i18n="exp.c2">Diseño skills, agentes y workflows a medida, y optimizo el consumo de tokens.</li>
+              <li data-i18n="exp.c3">Desarrollo full-stack con React, NestJS y PostgreSQL sobre microservicios dockerizados.</li>
+              <li data-i18n="exp.c4">Hago auditorías de seguridad y revisiones técnicas antes de cada despliegue.</li>
+              <li data-i18n="exp.c5">Gestiono releases, pipelines CI/CD y la monitorización en producción.</li>
+            </ul>
+            <ul class="tags"><li>Claude</li><li>React</li><li>NestJS</li><li>PostgreSQL</li><li>Docker</li><li>CI/CD</li></ul>
+          </article>
+        </li>
+        <li>
+          <article class="card">
+            <div class="job-head"><h3>Full-stack Developer · PROEDUCA</h3><span class="job-date" data-i18n="exp.d2">ene. 2024 – ene. 2026</span></div>
+            <p class="job-meta">Madrid · <span data-i18n="exp.m2">Plataforma de cumplimiento RGPD</span></p>
+            <ul class="bullets">
+              <li data-i18n="exp.p1">Refactoricé componentes aplicando Clean Code y reforcé los tests.</li>
+              <li data-i18n="exp.p2">Desarrollé evolutivos y mantenimiento de una app con datos sensibles.</li>
+              <li data-i18n="exp.p3">Pruebas de extremo a extremo con Cypress en cada release.</li>
+              <li data-i18n="exp.p4">Pipelines CI/CD con TeamCity y análisis de calidad con SonarQube.</li>
+              <li data-i18n="exp.p5">Trabajo en Scrum: sprints cortos, retrospectivas y entregas incrementales.</li>
+            </ul>
+            <ul class="tags"><li>Angular</li><li>Laravel</li><li>Docker</li><li>Cypress</li><li>TeamCity</li><li>SonarQube</li></ul>
+          </article>
+        </li>
+        <li>
+          <article class="card">
+            <div class="job-head"><h3>Full-stack Developer · Indra</h3><span class="job-date" data-i18n="exp.d3">sep. 2021 – ago. 2022</span></div>
+            <p class="job-meta">Ciudad Real · <span data-i18n="exp.m3">Proyecto para Repsol</span></p>
+            <ul class="bullets">
+              <li data-i18n="exp.i1">Funcionalidades CRUD y evolutivos para la gestión de procesos energéticos.</li>
+              <li data-i18n="exp.i2">Frontend en Angular y backend en Spring Boot con base de datos SQL.</li>
+              <li data-i18n="exp.i3">Tests con Jasmine y CI/CD con Jenkins y SonarQube.</li>
+              <li data-i18n="exp.i4">Scrum con Jira y control de versiones con Git.</li>
+            </ul>
+            <ul class="tags"><li>Angular</li><li>Spring Boot</li><li>SQL</li><li>Jasmine</li><li>Jenkins</li><li>Jira</li></ul>
+          </article>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="proyectos" aria-labelledby="projects-title">
+    <div class="container reveal">
+      <span class="eyebrow">04 · projects</span>
+      <h2 class="section-title" id="projects-title" data-i18n="proj.title">Proyectos</h2>
+      <p class="section-lead" data-i18n="proj.lead">Una selección de proyectos profesionales y personales.</p>
+
+      <h3 class="group-title" data-i18n="proj.work">Proyectos de empresa</h3>
+      <div class="grid">
+        <article class="card project">
+          <span class="project-kicker">CLAUGER</span>
+          <h3 data-i18n="proj.w1.t">Asistentes y agentes con Claude</h3>
+          <p data-i18n="proj.w1.d">Flujos inteligentes y herramientas asistidas por IA para automatizar tareas internas, con skills y agentes propios y un uso eficiente de tokens.</p>
+          <ul class="tags"><li>Claude</li><li data-i18n="proj.agents">Agentes</li><li>NestJS</li><li>React</li></ul>
+        </article>
+        <article class="card project">
+          <span class="project-kicker">PROEDUCA</span>
+          <h3 data-i18n="proj.w2.t">Plataforma de cumplimiento RGPD</h3>
+          <p data-i18n="proj.w2.d">Aplicación para gestionar datos personales según el RGPD, dockerizada, con tests E2E y análisis de calidad y seguridad en cada entrega.</p>
+          <ul class="tags"><li>Angular</li><li>Laravel</li><li>Docker</li><li>Cypress</li></ul>
+        </article>
+        <article class="card project">
+          <span class="project-kicker">INDRA · REPSOL</span>
+          <h3 data-i18n="proj.w3.t">Gestión de procesos energéticos</h3>
+          <p data-i18n="proj.w3.d">Sistema para optimizar y gestionar procesos energéticos de Repsol, con arquitectura en capas y despliegue continuo.</p>
+          <ul class="tags"><li>Angular</li><li>Spring Boot</li><li>SQL</li><li>Jenkins</li></ul>
+        </article>
+      </div>
+
+      <h3 class="group-title" data-i18n="proj.personal">En GitHub</h3>
+      <div class="grid">
+        <article class="card project">
+          <span class="project-kicker">JavaScript · 3D</span>
+          <h3 data-i18n="proj.g1.t">Salón recreativo 3D</h3>
+          <p data-i18n="proj.g1.d">Un salón recreativo en primera persona con seis máquinas jugables, premios, récords y hasta 5 jugadores. Se publica solo en GitHub Pages con cada push.</p>
+          <div class="links">
+            <a href="https://javiercillo11.github.io/arcade/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg><span data-i18n="proj.demo">Jugar online</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></a>
+            <a href="https://github.com/Javiercillo11/arcade" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="proj.code">Código</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></a>
+          </div>
+          <ul class="tags"><li>JavaScript</li><li>WebGL</li><li>GitHub Actions</li></ul>
+        </article>
+        <article class="card project">
+          <span class="project-kicker">Full-stack · Java</span>
+          <h3 data-i18n="proj.g2.t">Gestión de usuarios con Spring Boot</h3>
+          <p data-i18n="proj.g2.d">CRUD de usuarios con login, guards y validaciones de negocio. Backend en capas con DTOs validados y frontend servido con Nginx.</p>
+          <div class="links">
+            <a href="https://github.com/Javiercillo11/Gestion-Usuarios-Java-Angular" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="proj.code">Código</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></a>
+          </div>
+          <ul class="tags"><li>Angular 18</li><li>Spring Boot 3</li><li>JPA</li><li>Docker</li></ul>
+        </article>
+        <article class="card project">
+          <span class="project-kicker">Full-stack · Node</span>
+          <h3 data-i18n="proj.g3.t">Mini app full-stack con NestJS</h3>
+          <p data-i18n="proj.g3.d">La misma aplicación con backend modular en NestJS y validación con class-validator: buenas prácticas sin sobreingeniería.</p>
+          <div class="links">
+            <a href="https://github.com/Javiercillo11/MiniAppFullStack" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg><span data-i18n="proj.code">Código</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></a>
+          </div>
+          <ul class="tags"><li>Angular 18</li><li>NestJS 9</li><li>Docker</li><li>Nginx</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="formacion" aria-labelledby="edu-title">
+    <div class="container reveal">
+      <span class="eyebrow">05 · education</span>
+      <h2 class="section-title" id="edu-title" data-i18n="edu.title">Formación</h2>
+      <p class="section-lead" data-i18n="edu.lead">Formación técnica continua en frontend, backend y desarrollo de aplicaciones.</p>
+      <ul class="edu card">
+        <li><span class="job-date">2025</span><div><h3 data-i18n="edu.e1">Bootcamp Backend (especialidad Java)</h3><p>UNIR Formación Profesional</p></div></li>
+        <li><span class="job-date">2024</span><div><h3 data-i18n="edu.e2">Formación OpenCells</h3><p>Qualentum</p></div></li>
+        <li><span class="job-date">2023 – 2024</span><div><h3 data-i18n="edu.e3">Bootcamp Frontend (especialidad Angular)</h3><p>UNIR Formación Profesional</p></div></li>
+        <li><span class="job-date">2022 – 2023</span><div><h3 data-i18n="edu.e4">CFGS Desarrollo de Aplicaciones Web (DAW)</h3><p>IES Julio Verne</p></div></li>
+        <li><span class="job-date">2019 – 2021</span><div><h3 data-i18n="edu.e5">CFGS Desarrollo de Aplicaciones Multiplataforma (DAM)</h3><p>IES Julio Verne</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contacto" aria-labelledby="contact-title">
+    <div class="container reveal">
+      <span class="eyebrow">06 · contact</span>
+      <h2 class="section-title" id="contact-title" data-i18n="contact.title">Contacto</h2>
+      <p class="section-lead" data-i18n="contact.lead">¿Tienes un proyecto o una oferta? Escríbeme y hablamos.</p>
+      <div class="contact-grid">
+        <a class="card contact-card" href="mailto:fjsanchezv2001@gmail.com">
+          <span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
+          <span><strong>Email</strong><span class="val">fjsanchezv2001@gmail.com</span></span>
+        </a>
+        <a class="card contact-card" href="https://www.linkedin.com/in/francisco-javier-sanchez-vargas-12507a22b" target="_blank" rel="noopener">
+          <span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></span>
+          <span><strong>LinkedIn</strong><span class="val">francisco-javier-sanchez-vargas</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></span>
+        </a>
+        <a class="card contact-card" href="https://github.com/Javiercillo11" target="_blank" rel="noopener">
+          <span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg></span>
+          <span><strong>GitHub</strong><span class="val">Javiercillo11</span><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container"><p>© 2026 Francisco Javier Sánchez Vargas · <span data-i18n="footer.made">Hecho a mano con HTML, CSS y JavaScript.</span></p></div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  var I18N = {
+    en: {
+      'meta.title': 'Javier Sánchez · Full-stack Developer',
+      'meta.description': 'Portfolio of Javier Sánchez, a full-stack developer specialised in Angular, NestJS, Docker and generative AI with LLMs.',
+      'a11y.skip': 'Skip to content',
+      'a11y.newTab': '(opens in a new tab)',
+      'nav.label': 'Main',
+      'nav.about': 'About',
+      'nav.skills': 'Skills',
+      'nav.experience': 'Experience',
+      'nav.projects': 'Projects',
+      'nav.education': 'Education',
+      'nav.contact': 'Contact',
+      'tools.lang': 'Cambiar a español',
+      'tools.langShort': 'ES',
+      'tools.theme': 'Toggle colour theme',
+      'tools.menu': 'Open menu',
+      'hero.status': 'Software Developer at CLAUGER · Madrid',
+      'hero.hello': 'Hi, I’m',
+      'hero.role': 'Full-stack Developer · Generative AI',
+      'hero.text': 'I build scalable, secure web apps with Angular, React, NestJS and Docker, and I bring LLMs like Claude into real products: assistants, agents and process automation.',
+      'hero.ctaProjects': 'See projects',
+      'hero.ctaContact': 'Get in touch',
+      'about.title': 'About me',
+      'about.p1': 'I’m a software developer who has worked across the whole lifecycle: analysis, design, development, testing, deployment and production maintenance.',
+      'about.p2': 'I care about clean code, automation and security. I set up CI/CD pipelines, review quality before every release and design solutions that grow with the business.',
+      'about.p3': 'Away from the keyboard I’ve been a Spanish Football Federation referee since 2021: making fast decisions under pressure and working as a team are trained on the pitch too.',
+      'about.f.location': 'Location',
+      'about.f.role': 'Current role',
+      'about.f.exp': 'Experience',
+      'about.f.expVal': '3+ years in development',
+      'about.f.focus': 'Focus',
+      'about.f.focusVal': 'Full-stack & generative AI',
+      'about.f.langs': 'Languages',
+      'about.f.langsVal': 'Native Spanish · Professional English',
+      'skills.title': 'Skills',
+      'skills.lead': 'The technologies I work with every day, grouped by area.',
+      'skills.rest': 'REST APIs',
+      'skills.micro': 'Microservices',
+      'skills.ai': 'Generative AI',
+      'skills.agents': 'AI agents',
+      'skills.skills': 'Skills & workflows',
+      'skills.tokens': 'Token optimisation',
+      'skills.data': 'Data',
+      'skills.model': 'Data modelling',
+      'skills.testing': 'Testing & quality',
+      'skills.audits': 'Security audits',
+      'skills.soft': 'Soft skills',
+      'skills.s1': 'Working under pressure',
+      'skills.s2': 'Decision-making',
+      'skills.s3': 'Teamwork',
+      'skills.s4': 'Product mindset',
+      'exp.title': 'Experience',
+      'exp.lead': 'Company projects in energy, education and industry, always end to end.',
+      'exp.d1': 'May 2026 – present',
+      'exp.m1': 'Full-stack & AI',
+      'exp.c1': 'I integrate generative AI and LLMs (Anthropic’s Claude) into products and internal processes.',
+      'exp.c2': 'I design custom skills, agents and workflows, and optimise token usage.',
+      'exp.c3': 'Full-stack development with React, NestJS and PostgreSQL on dockerised microservices.',
+      'exp.c4': 'I run security audits and technical reviews before every deployment.',
+      'exp.c5': 'I manage releases, CI/CD pipelines and production monitoring.',
+      'exp.d2': 'Jan 2024 – Jan 2026',
+      'exp.m2': 'GDPR compliance platform',
+      'exp.p1': 'Refactored components following Clean Code and strengthened the test suite.',
+      'exp.p2': 'Built new features and maintained an app handling sensitive data.',
+      'exp.p3': 'End-to-end testing with Cypress on every release.',
+      'exp.p4': 'CI/CD pipelines with TeamCity and quality analysis with SonarQube.',
+      'exp.p5': 'Scrum: short sprints, retrospectives and incremental delivery.',
+      'exp.d3': 'Sep 2021 – Aug 2022',
+      'exp.m3': 'Project for Repsol',
+      'exp.i1': 'CRUD features and enhancements for managing energy processes.',
+      'exp.i2': 'Angular frontend and Spring Boot backend on a SQL database.',
+      'exp.i3': 'Tests with Jasmine and CI/CD with Jenkins and SonarQube.',
+      'exp.i4': 'Scrum with Jira and version control with Git.',
+      'proj.title': 'Projects',
+      'proj.lead': 'A selection of professional and personal projects.',
+      'proj.work': 'Company projects',
+      'proj.personal': 'On GitHub',
+      'proj.agents': 'Agents',
+      'proj.w1.t': 'Assistants and agents with Claude',
+      'proj.w1.d': 'Smart flows and AI-assisted tools that automate internal tasks, with custom skills and agents and efficient token usage.',
+      'proj.w2.t': 'GDPR compliance platform',
+      'proj.w2.d': 'An app for managing personal data under the GDPR: dockerised, with E2E tests and quality and security analysis on every delivery.',
+      'proj.w3.t': 'Energy process management',
+      'proj.w3.d': 'A system for optimising and managing Repsol’s energy processes, with a layered architecture and continuous deployment.',
+      'proj.g1.t': '3D arcade',
+      'proj.g1.d': 'A first-person arcade with six playable machines, prizes, high scores and up to 5 players. It deploys itself to GitHub Pages on every push.',
+      'proj.g2.t': 'User management with Spring Boot',
+      'proj.g2.d': 'User CRUD with login, route guards and business validation. Layered backend with validated DTOs and a frontend served by Nginx.',
+      'proj.g3.t': 'Full-stack mini app with NestJS',
+      'proj.g3.d': 'The same app with a modular NestJS backend and class-validator validation: good practices without over-engineering.',
+      'proj.demo': 'Play online',
+      'proj.code': 'Code',
+      'edu.title': 'Education',
+      'edu.lead': 'Continuous technical training in frontend, backend and application development.',
+      'edu.e1': 'Backend Bootcamp (Java track)',
+      'edu.e2': 'OpenCells training',
+      'edu.e3': 'Frontend Bootcamp (Angular track)',
+      'edu.e4': 'Higher VET Diploma in Web Application Development (DAW)',
+      'edu.e5': 'Higher VET Diploma in Multiplatform Application Development (DAM)',
+      'contact.title': 'Contact',
+      'contact.lead': 'Got a project or a role in mind? Drop me a line.',
+      'footer.made': 'Handmade with HTML, CSS and JavaScript.'
+    }
+  };
+
+  /* Textos en español: los que ya están en el HTML, guardados en la primera pasada. */
+  var ES = {
+    'meta.title': document.title,
+    'meta.description': document.querySelector('meta[name="description"]').content
+  };
+  var textEls = document.querySelectorAll('[data-i18n]');
+  var attrEls = document.querySelectorAll('[data-i18n-attr]');
+  textEls.forEach(function (el) { ES[el.dataset.i18n] = el.textContent; });
+  attrEls.forEach(function (el) {
+    el.dataset.i18nAttr.split(';').forEach(function (pair) {
+      var p = pair.split(':');
+      ES[p[1]] = el.getAttribute(p[0]);
+    });
+  });
+
+  function t(lang, key) {
+    return (lang === 'en' && I18N.en[key]) || ES[key];
+  }
+
+  function applyLang(lang) {
+    root.lang = lang;
+    document.title = t(lang, 'meta.title');
+    document.querySelector('meta[name="description"]').content = t(lang, 'meta.description');
+    textEls.forEach(function (el) { el.textContent = t(lang, el.dataset.i18n); });
+    attrEls.forEach(function (el) {
+      el.dataset.i18nAttr.split(';').forEach(function (pair) {
+        var p = pair.split(':');
+        el.setAttribute(p[0], t(lang, p[1]));
+      });
+    });
+    /* El botón de idioma está escrito en el idioma al que cambia. */
+    langBtn.lang = lang === 'en' ? 'es' : 'en';
+  }
+
+  function store(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) {}
+  }
+
+  var langBtn = document.querySelector('.lang-btn');
+  var themeBtn = document.querySelector('.theme-btn');
+  var menuBtn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('site-nav');
+
+  try {
+    applyLang(root.lang === 'en' ? 'en' : 'es');
+  } finally {
+    root.classList.add('i18n-ready');
+  }
+
+  langBtn.addEventListener('click', function () {
+    var next = root.lang === 'en' ? 'es' : 'en';
+    applyLang(next);
+    store('lang', next);
+    if (new URLSearchParams(location.search).has('lang')) {
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+  });
+
+  function syncThemeBtn() {
+    themeBtn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+  }
+  syncThemeBtn();
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store('theme', next);
+    syncThemeBtn();
+  });
+
+  function setMenu(open) {
+    nav.classList.toggle('is-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+  }
+  menuBtn.addEventListener('click', function () {
+    setMenu(menuBtn.getAttribute('aria-expanded') !== 'true');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      menuBtn.focus();
+    }
+  });
+
+  var reveals = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  reveals.forEach(function (el) { revealObserver.observe(el); });
+
+  var navLinks = {};
+  nav.querySelectorAll('a[href^="#"]').forEach(function (a) { navLinks[a.hash.slice(1)] = a; });
+  var activeObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      Object.keys(navLinks).forEach(function (id) { navLinks[id].removeAttribute('aria-current'); });
+      var link = navLinks[entry.target.id];
+      if (link) link.setAttribute('aria-current', 'true');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('main section[id]').forEach(function (s) { activeObserver.observe(s); });
+})();
+</script>
+</body>
+</html>
