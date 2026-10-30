@@ -249,6 +249,14 @@
   .links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 600; font-size: .925rem; }
   .links a { display: inline-flex; align-items: center; gap: 6px; }
 
+  /* Servicios */
+  .service { display: flex; flex-direction: column; gap: 12px; }
+  .service .skill-head { margin-bottom: 4px; }
+  .service p { color: var(--muted); }
+  .service .bullets { margin: 0; padding-top: 4px; }
+  .service-cta { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+  .service-cta p { color: var(--heading); font-weight: 600; max-width: 56ch; }
+
   /* Formación */
   .edu { list-style: none; display: grid; gap: 14px; }
   .edu li { display: grid; grid-template-columns: 150px 1fr; gap: 6px 20px; align-items: baseline; }
@@ -265,7 +273,7 @@
   .contact-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .contact-card strong { display: block; color: var(--heading); }
   .contact-card span.val { color: var(--muted); font-size: .9rem; word-break: break-all; }
-  .site-footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: .9rem; }
+  .site-footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: .9rem; text-align: center; }
 
   /* Aparición de secciones: solo con JS, el contenido nunca depende de ello. */
   html.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
@@ -305,6 +313,9 @@
   <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/><path d="M19 3v4M21 5h-4"/></symbol>
   <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-nfc" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="5" y="9" width="4" height="4" rx="1"/><path d="M13 9.5a3.5 3.5 0 0 1 0 5M16 8a6.5 6.5 0 0 1 0 8"/></symbol>
+  <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/></symbol>
 </svg>
 
@@ -316,6 +327,7 @@
     <nav class="site-nav" id="site-nav" aria-label="Principal" data-i18n-attr="aria-label:nav.label">
       <ul class="nav-list">
         <li><a href="#sobre-mi" data-i18n="nav.about">Sobre mí</a></li>
+        <li><a href="#servicios" data-i18n="nav.services">Servicios</a></li>
         <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
         <li><a href="#experiencia" data-i18n="nav.experience">Experiencia</a></li>
         <li><a href="#proyectos" data-i18n="nav.projects">Proyectos</a></li>
@@ -349,8 +361,8 @@
         <p class="hero-text" data-i18n="hero.text">Construyo aplicaciones web escalables y seguras con Angular, React, NestJS y Docker, y llevo los LLMs como Claude a productos reales: asistentes, agentes y automatización de procesos.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#proyectos"><span data-i18n="hero.ctaProjects">Ver proyectos</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#servicios" data-i18n="hero.ctaServices">Ver servicios</a>
           <a class="btn btn-ghost" href="Fco_Javier_Sanchez_CV_FullStack_Developer.pdf" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><span data-i18n="hero.ctaCv">Descargar CV</span><span class="sr-only" data-i18n="hero.ctaCvInfo">(PDF, 34 KB)</span></a>
-          <a class="btn btn-ghost" href="#contacto" data-i18n="hero.ctaContact">Contactar</a>
         </div>
       </div>
       <div class="code" aria-hidden="true">
@@ -390,9 +402,50 @@
     </div>
   </section>
 
+  <section id="servicios" aria-labelledby="services-title">
+    <div class="container reveal">
+      <span class="eyebrow">02 · services</span>
+      <h2 class="section-title" id="services-title" data-i18n="serv.title">Servicios</h2>
+      <p class="section-lead" data-i18n="serv.lead">Llevo tu negocio al mundo digital con soluciones a medida: desde tu primera web hasta las herramientas con las que lo gestionas cada día.</p>
+      <div class="grid">
+        <article class="card service">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg></span><h3 data-i18n="serv.s1.t">Páginas web para tu negocio</h3></div>
+          <p data-i18n="serv.s1.d">Webs rápidas, adaptadas al móvil y fáciles de encontrar en Google, para que tus clientes te conozcan, confíen en ti y te contacten.</p>
+          <ul class="bullets">
+            <li data-i18n="serv.s1.b1">Diseño a medida y responsive</li>
+            <li data-i18n="serv.s1.b2">SEO básico y carga rápida</li>
+            <li data-i18n="serv.s1.b3">Dominio, alojamiento y mantenimiento</li>
+          </ul>
+        </article>
+        <article class="card service">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-nfc"/></svg></span><h3 data-i18n="serv.s2.t">Tarjetas de negocio NFC</h3></div>
+          <p data-i18n="serv.s2.d">Tarjetas inteligentes que comparten tu contacto, tu web o tus redes con solo acercarlas al móvil. Sin apps, sin papel y siempre al día.</p>
+          <ul class="bullets">
+            <li data-i18n="serv.s2.b1">Perfil digital con tu imagen de marca</li>
+            <li data-i18n="serv.s2.b2">Contacto, web, redes y reseñas en Google</li>
+            <li data-i18n="serv.s2.b3">Cambias tus datos sin reimprimir nada</li>
+          </ul>
+        </article>
+        <article class="card service">
+          <div class="skill-head"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-apps"/></svg></span><h3 data-i18n="serv.s3.t">Aplicaciones de gestión internas</h3></div>
+          <p data-i18n="serv.s3.d">Herramientas a medida para organizar clientes, pedidos, inventario o citas, y dejar atrás las hojas de cálculo y el papeleo.</p>
+          <ul class="bullets">
+            <li data-i18n="serv.s3.b1">Paneles, informes y control de usuarios</li>
+            <li data-i18n="serv.s3.b2">Automatización de tareas, con IA cuando aporta</li>
+            <li data-i18n="serv.s3.b3">Datos seguros y accesibles desde cualquier lugar</li>
+          </ul>
+        </article>
+      </div>
+      <div class="card service-cta">
+        <p data-i18n="serv.cta">¿Tienes una idea para tu negocio? Cuéntamela y te preparo un presupuesto sin compromiso.</p>
+        <a class="btn btn-primary" href="#contacto"><span data-i18n="serv.ctaBtn">Pedir presupuesto</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
   <section id="skills" aria-labelledby="skills-title">
     <div class="container reveal">
-      <span class="eyebrow">02 · skills</span>
+      <span class="eyebrow">03 · skills</span>
       <h2 class="section-title" id="skills-title" data-i18n="skills.title">Skills</h2>
       <p class="section-lead" data-i18n="skills.lead">Tecnologías con las que trabajo a diario, agrupadas por área.</p>
       <div class="grid">
@@ -436,7 +489,7 @@
 
   <section id="experiencia" aria-labelledby="exp-title">
     <div class="container reveal">
-      <span class="eyebrow">03 · experience</span>
+      <span class="eyebrow">04 · experience</span>
       <h2 class="section-title" id="exp-title" data-i18n="exp.title">Experiencia</h2>
       <p class="section-lead" data-i18n="exp.lead">Proyectos de empresa en energía, educación e industria, siempre de punta a punta.</p>
       <ol class="timeline">
@@ -487,7 +540,7 @@
 
   <section id="proyectos" aria-labelledby="projects-title">
     <div class="container reveal">
-      <span class="eyebrow">04 · projects</span>
+      <span class="eyebrow">05 · projects</span>
       <h2 class="section-title" id="projects-title" data-i18n="proj.title">Proyectos</h2>
       <p class="section-lead" data-i18n="proj.lead">Una selección de proyectos profesionales y personales.</p>
 
@@ -549,7 +602,7 @@
 
   <section id="formacion" aria-labelledby="edu-title">
     <div class="container reveal">
-      <span class="eyebrow">05 · education</span>
+      <span class="eyebrow">06 · education</span>
       <h2 class="section-title" id="edu-title" data-i18n="edu.title">Formación</h2>
       <p class="section-lead" data-i18n="edu.lead">Formación técnica continua en frontend, backend y desarrollo de aplicaciones.</p>
       <ul class="edu card">
@@ -564,7 +617,7 @@
 
   <section id="contacto" aria-labelledby="contact-title">
     <div class="container reveal">
-      <span class="eyebrow">06 · contact</span>
+      <span class="eyebrow">07 · contact</span>
       <h2 class="section-title" id="contact-title" data-i18n="contact.title">Contacto</h2>
       <p class="section-lead" data-i18n="contact.lead">¿Tienes un proyecto o una oferta? Escríbeme y hablamos.</p>
       <div class="contact-grid">
@@ -604,6 +657,7 @@
       'nav.skills': 'Skills',
       'nav.experience': 'Experience',
       'nav.projects': 'Projects',
+      'nav.services': 'Services',
       'nav.education': 'Education',
       'nav.contact': 'Contact',
       'tools.lang': 'Cambiar a español',
@@ -615,9 +669,9 @@
       'hero.role': 'Full-stack Developer · Generative AI',
       'hero.text': 'I build scalable, secure web apps with Angular, React, NestJS and Docker, and I bring LLMs like Claude into real products: assistants, agents and process automation.',
       'hero.ctaProjects': 'See projects',
+      'hero.ctaServices': 'See services',
       'hero.ctaCv': 'Download CV',
       'hero.ctaCvInfo': '(PDF, 34 KB, in Spanish)',
-      'hero.ctaContact': 'Get in touch',
       'about.title': 'About me',
       'about.p1': 'I’m a software developer who has worked across the whole lifecycle: analysis, design, development, testing, deployment and production maintenance.',
       'about.p2': 'I care about clean code, automation and security. I set up CI/CD pipelines, review quality before every release and design solutions that grow with the business.',
@@ -688,6 +742,25 @@
       'proj.g3.d': 'The same app with a modular NestJS backend and class-validator validation: good practices without over-engineering.',
       'proj.demo': 'Play online',
       'proj.code': 'Code',
+      'serv.title': 'Services',
+      'serv.lead': 'I take your business digital with tailored solutions: from your first website to the tools you run it with every day.',
+      'serv.s1.t': 'Websites for your business',
+      'serv.s1.d': 'Fast, mobile-friendly websites that are easy to find on Google, so customers can discover you, trust you and get in touch.',
+      'serv.s1.b1': 'Custom, responsive design',
+      'serv.s1.b2': 'Basic SEO and fast loading',
+      'serv.s1.b3': 'Domain, hosting and maintenance',
+      'serv.s2.t': 'NFC business cards',
+      'serv.s2.d': 'Smart cards that share your contact details, website or social profiles with a single tap on a phone. No apps, no paper, always up to date.',
+      'serv.s2.b1': 'Digital profile with your branding',
+      'serv.s2.b2': 'Contact, website, social links and Google reviews',
+      'serv.s2.b3': 'Update your details without reprinting',
+      'serv.s3.t': 'Internal management apps',
+      'serv.s3.d': 'Custom tools to organise customers, orders, inventory or bookings, and leave spreadsheets and paperwork behind.',
+      'serv.s3.b1': 'Dashboards, reports and user access control',
+      'serv.s3.b2': 'Task automation, with AI where it helps',
+      'serv.s3.b3': 'Secure data, accessible from anywhere',
+      'serv.cta': 'Got an idea for your business? Tell me about it and I’ll put together a no-obligation quote.',
+      'serv.ctaBtn': 'Request a quote',
       'edu.title': 'Education',
       'edu.lead': 'Continuous technical training in frontend, backend and application development.',
       'edu.e1': 'Backend Bootcamp (Java track)',
