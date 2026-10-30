@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedir presupuesto · Javier Sánchez</title>
+<meta name="description" content="Pide un presupuesto sin compromiso para tu página web, tus tarjetas de negocio NFC o una aplicación de gestión a medida.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M22 22 12 32l10 10M42 22l10 10-10 10' fill='none' stroke='%232dd4bf' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M36 18 28 46' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>
+  /* Tema e idioma antes del primer pintado: sin parpadeo. */
+  (function () {
+    var d = document.documentElement, t, l;
+    d.classList.add('js');
+    try { t = localStorage.getItem('theme'); l = localStorage.getItem('lang'); } catch (e) {}
+    var q = new URLSearchParams(location.search).get('lang');
+    if (q === 'en' || q === 'es') l = q;
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    d.setAttribute('data-theme', t);
+    d.lang = l === 'en' ? 'en' : 'es';
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #0b1120;
+    --surface: #111a2e;
+    --surface-2: #17223a;
+    --text: #e2e8f0;
+    --heading: #f8fafc;
+    --muted: #9fb0c8;
+    --border: #23314d;
+    --accent: #60a5fa;
+    --accent-2: #2dd4bf;
+    --on-accent: #0b1120;
+    --tag-bg: rgba(96, 165, 250, .12);
+    --tag-2-bg: rgba(45, 212, 191, .12);
+    --error: #fca5a5;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+    --header-bg: rgba(11, 17, 32, .82);
+    --radius: 14px;
+    --max: 760px;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6f8fb; --surface: #ffffff; --surface-2: #eef2f7; --text: #1e293b; --heading: #0f172a;
+      --muted: #475569; --border: #dbe3ee; --accent: #2563eb; --accent-2: #0f766e; --on-accent: #ffffff;
+      --tag-bg: #e8f0fe; --tag-2-bg: #e0f5f1; --error: #b91c1c;
+      --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+      --header-bg: rgba(246, 248, 251, .85);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f8fb; --surface: #ffffff; --surface-2: #eef2f7; --text: #1e293b; --heading: #0f172a;
+    --muted: #475569; --border: #dbe3ee; --accent: #2563eb; --accent-2: #0f766e; --on-accent: #ffffff;
+    --tag-bg: #e8f0fe; --tag-2-bg: #e0f5f1; --error: #b91c1c;
+    --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+    --header-bg: rgba(246, 248, 251, .85);
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  /* Evita ver el español un instante cuando se carga en inglés. */
+  html[lang="en"]:not(.i18n-ready) body { visibility: hidden; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 400 1rem/1.65 var(--font);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { color: var(--heading); line-height: 1.2; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .icon { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* Cabecera */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--header-bg); border-bottom: 1px solid var(--border);
+    -webkit-backdrop-filter: saturate(160%) blur(10px); backdrop-filter: saturate(160%) blur(10px);
+  }
+  .header-inner { display: flex; align-items: center; gap: 16px; padding-block: 12px; }
+  .brand { font-weight: 700; color: var(--heading); text-decoration: none; letter-spacing: -.01em; margin-right: auto; }
+  .brand span { color: var(--accent-2); }
+  .back { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .925rem; color: var(--muted); text-decoration: none; }
+  .back:hover { color: var(--heading); }
+  .back .icon { transform: rotate(180deg); }
+  .tools { display: flex; gap: 6px; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 40px; height: 40px; padding: 0 10px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--surface); color: var(--heading);
+    font: 600 .85rem var(--font); cursor: pointer;
+  }
+  .icon-btn:hover { border-color: var(--accent); }
+  :root[data-theme="light"] .theme-btn .i-sun, :root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+  html:not(.js) .js-only { display: none; }
+
+  /* Formulario */
+  main { padding: 64px 0 88px; }
+  .eyebrow { display: inline-block; font: 600 .8rem var(--mono); color: var(--accent-2); letter-spacing: .04em; margin-bottom: 10px; }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -.02em; margin-bottom: 12px; }
+  .lead { color: var(--muted); max-width: 60ch; margin-bottom: 36px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; box-shadow: var(--shadow);
+  }
+  form { display: grid; gap: 24px; }
+  label { display: block; font-weight: 600; color: var(--heading); margin-bottom: 8px; }
+  .opt { font-weight: 400; color: var(--muted); }
+  .row { display: grid; gap: 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  input[type="text"], input[type="tel"], input[type="email"], select, textarea {
+    width: 100%; padding: .75rem .9rem; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--bg); color: var(--text); font: inherit;
+  }
+  select {
+    appearance: none; cursor: pointer; padding-right: 2.6rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .8rem center; background-size: 1.1rem;
+  }
+  select:invalid { color: var(--muted); }
+  option { color: var(--text); background: var(--surface); }
+  /* Lista de opciones con el estilo de la web donde el navegador lo permite (Chrome y Edge). */
+  @supports (appearance: base-select) {
+    select, ::picker(select) { appearance: base-select; }
+    select { display: flex; align-items: center; gap: 10px; background-image: none; padding-right: .9rem; }
+    select::picker-icon {
+      content: ""; width: 1.1rem; height: 1.1rem; margin-left: auto; background-color: var(--muted);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+      transition: rotate .2s;
+    }
+    select:open { border-color: var(--accent); box-shadow: 0 0 0 3px var(--tag-bg); }
+    select:open::picker-icon { rotate: 180deg; }
+    select .icon { color: var(--accent); }
+    ::picker(select) {
+      margin: 6px 0; padding: 6px; border: 1px solid var(--border); border-radius: 12px;
+      background: var(--surface); box-shadow: var(--shadow);
+    }
+    option {
+      display: flex; align-items: center; gap: 12px; padding: .7rem .8rem; border-radius: 8px;
+      background: transparent; color: var(--heading); font-weight: 600; cursor: pointer;
+    }
+    option .icon { color: var(--accent); width: 1.25em; height: 1.25em; }
+    option[value=""] { display: none; }
+    option:hover, option:focus-visible { background: var(--surface-2); outline: none; }
+    option:checked { background: var(--tag-bg); }
+    option::checkmark { order: 1; margin-left: auto; color: var(--accent); }
+  }
+  textarea { min-height: 140px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--tag-bg); }
+  [aria-invalid="true"] { border-color: var(--error) !important; }
+  .error { color: var(--error); font-size: .875rem; margin-top: 6px; }
+  .error:empty { display: none; }
+  .note { color: var(--muted); font-size: .875rem; }
+  .submit-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: .8rem 1.3rem;
+    border-radius: 10px; font: 600 1rem var(--font); border: 1px solid transparent; cursor: pointer;
+    background: var(--accent); color: var(--on-accent);
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn[disabled] { opacity: .6; cursor: progress; }
+  .status { padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--tag-2-bg); color: var(--heading); }
+  .status[hidden] { display: none; }
+  .status.is-error { background: transparent; border-color: var(--error); }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 16px; }
+    main { padding: 40px 0 64px; }
+    .card { padding: 20px; }
+    .row { grid-template-columns: 1fr; }
+    .back-text { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-nfc" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><rect x="5" y="9" width="4" height="4" rx="1"/><path d="M13 9.5a3.5 3.5 0 0 1 0 5M16 8a6.5 6.5 0 0 1 0 8"/></symbol>
+  <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/><path d="M19 3v4M21 5h-4"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">javier<span>.dev</span></a>
+    <a class="back" href="index.html#servicios"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg><span class="back-text" data-i18n="nav.back">Volver a servicios</span></a>
+    <div class="tools js-only">
+      <button class="icon-btn lang-btn" type="button" aria-label="Switch to English" data-i18n-attr="aria-label:tools.lang" lang="en"><span aria-hidden="true" data-i18n="tools.langShort">EN</span></button>
+      <button class="icon-btn theme-btn" type="button" aria-label="Cambiar tema de color" data-i18n-attr="aria-label:tools.theme" aria-pressed="false">
+        <svg class="icon i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="icon i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <span class="eyebrow">services · quote</span>
+    <h1 data-i18n="q.title">Pide tu presupuesto</h1>
+    <p class="lead" data-i18n="q.lead">Cuéntame qué necesitas y te respondo con una propuesta a medida, sin compromiso.</p>
+
+    <form class="card" id="quote-form" novalidate>
+      <div>
+        <label for="servicio" data-i18n="q.service">¿Qué servicio te interesa?</label>
+        <select id="servicio" name="servicio" required aria-describedby="err-servicio">
+          <option value="" data-i18n="q.s.pick">Elige un servicio</option>
+          <option value="web"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span data-i18n="q.s.web">Página web</span></option>
+          <option value="nfc"><svg class="icon" aria-hidden="true"><use href="#i-nfc"/></svg><span data-i18n="q.s.nfc">Tarjetas de negocio NFC</span></option>
+          <option value="app"><svg class="icon" aria-hidden="true"><use href="#i-apps"/></svg><span data-i18n="q.s.app">Aplicación de gestión</span></option>
+          <option value="otro"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg><span data-i18n="q.s.other">Otro proyecto</span></option>
+        </select>
+        <p class="error" id="err-servicio" aria-live="polite"></p>
+      </div>
+
+      <div>
+        <label for="nombre" data-i18n="q.name">Nombre</label>
+        <input type="text" id="nombre" name="nombre" autocomplete="name" required aria-describedby="err-nombre">
+        <p class="error" id="err-nombre" aria-live="polite"></p>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="telefono" data-i18n="q.phone">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" autocomplete="tel" inputmode="tel" required aria-describedby="err-telefono">
+          <p class="error" id="err-telefono" aria-live="polite"></p>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="err-email">
+          <p class="error" id="err-email" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div>
+        <label for="mensaje"><span data-i18n="q.msg">Cuéntame qué necesitas</span> <span class="opt" data-i18n="q.optional">(opcional)</span></label>
+        <textarea id="mensaje" name="mensaje" data-i18n-attr="placeholder:q.msgPh" placeholder="Por ejemplo: tengo una peluquería y quiero una web con reserva de citas."></textarea>
+      </div>
+
+      <!-- Trampa para bots: invisible para las personas. -->
+      <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="submit-row">
+        <p class="note" data-i18n="q.privacy">Solo usaré estos datos para responder a tu solicitud.</p>
+        <button class="btn" type="submit"><span data-i18n="q.submit">Enviar solicitud</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
+
+      <p class="status" id="form-status" role="status" hidden></p>
+    </form>
+  </div>
+</main>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* La web no tiene servidor: Web3Forms recibe la solicitud y la reenvía al email de esta clave.
+     La clave es pública por diseño: solo permite enviar solicitudes a ese buzón. */
+  var TO_EMAIL = 'fjsanchezv2001@gmail.com';
+  var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+  var ACCESS_KEY = '6183ed85-d9fd-47ab-9147-5a2aee57f285';
+
+  var I18N = {
+    en: {
+      'meta.title': 'Request a quote · Javier Sánchez',
+      'meta.description': 'Request a no-obligation quote for your website, NFC business cards or a custom management app.',
+      'nav.back': 'Back to services',
+      'tools.lang': 'Cambiar a español',
+      'tools.langShort': 'ES',
+      'tools.theme': 'Toggle colour theme',
+      'q.title': 'Request a quote',
+      'q.lead': 'Tell me what you need and I’ll reply with a tailored, no-obligation proposal.',
+      'q.service': 'Which service are you interested in?',
+      'q.s.pick': 'Choose a service',
+      'q.s.web': 'Website',
+      'q.s.nfc': 'NFC business cards',
+      'q.s.app': 'Management app',
+      'q.s.other': 'Something else',
+      'q.name': 'Name',
+      'q.phone': 'Phone',
+      'q.msg': 'Tell me what you need',
+      'q.optional': '(optional)',
+      'q.msgPh': 'For example: I run a hair salon and want a website with online booking.',
+      'q.privacy': 'I’ll only use this information to reply to your request.',
+      'q.submit': 'Send request',
+      'q.sending': 'Sending…',
+      'e.service': 'Choose the service you’re interested in.',
+      'e.name': 'Enter your name.',
+      'e.phone': 'Enter a valid phone number.',
+      'e.email': 'Enter a valid email address.',
+      'ok.sent': 'Thanks! I’ve received your request and will get back to you as soon as possible.',
+      'ko.sent': 'The request couldn’t be sent. Please try again or email me at ',
+      'mail.subject': 'Quote request'
+    },
+    es: {
+      'q.sending': 'Enviando…',
+      'e.service': 'Elige el servicio que te interesa.',
+      'e.name': 'Escribe tu nombre.',
+      'e.phone': 'Escribe un teléfono válido.',
+      'e.email': 'Escribe un email válido.',
+      'ok.sent': '¡Gracias! He recibido tu solicitud y te responderé lo antes posible.',
+      'ko.sent': 'No se ha podido enviar la solicitud. Inténtalo de nuevo o escríbeme a ',
+      'mail.subject': 'Solicitud de presupuesto'
+    }
+  };
+
+  /* Textos en español: los que ya están en el HTML, guardados en la primera pasada. */
+  var ES = I18N.es;
+  ES['meta.title'] = document.title;
+  ES['meta.description'] = document.querySelector('meta[name="description"]').content;
+  var textEls = document.querySelectorAll('[data-i18n]');
+  var attrEls = document.querySelectorAll('[data-i18n-attr]');
+  textEls.forEach(function (el) { ES[el.dataset.i18n] = el.textContent; });
+  attrEls.forEach(function (el) {
+    el.dataset.i18nAttr.split(';').forEach(function (pair) {
+      var p = pair.split(':');
+      ES[p[1]] = el.getAttribute(p[0]);
+    });
+  });
+
+  function t(key) {
+    return (root.lang === 'en' && I18N.en[key]) || ES[key];
+  }
+
+  var langBtn = document.querySelector('.lang-btn');
+  var themeBtn = document.querySelector('.theme-btn');
+
+  function applyLang(lang) {
+    root.lang = lang;
+    document.title = t('meta.title');
+    document.querySelector('meta[name="description"]').content = t('meta.description');
+    textEls.forEach(function (el) { el.textContent = t(el.dataset.i18n); });
+    attrEls.forEach(function (el) {
+      el.dataset.i18nAttr.split(';').forEach(function (pair) {
+        var p = pair.split(':');
+        el.setAttribute(p[0], t(p[1]));
+      });
+    });
+    /* El botón de idioma está escrito en el idioma al que cambia. */
+    langBtn.lang = lang === 'en' ? 'es' : 'en';
+    document.querySelectorAll('.error').forEach(function (el) {
+      if (el.dataset.key) el.textContent = t(el.dataset.key);
+    });
+  }
+
+  function store(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) {}
+  }
+
+  try {
+    applyLang(root.lang === 'en' ? 'en' : 'es');
+  } finally {
+    root.classList.add('i18n-ready');
+  }
+
+  langBtn.addEventListener('click', function () {
+    var next = root.lang === 'en' ? 'es' : 'en';
+    applyLang(next);
+    store('lang', next);
+    if (new URLSearchParams(location.search).has('lang')) {
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+  });
+
+  function syncThemeBtn() {
+    themeBtn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+  }
+  syncThemeBtn();
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store('theme', next);
+    syncThemeBtn();
+  });
+
+  /* Validación */
+  var form = document.getElementById('quote-form');
+  var statusEl = document.getElementById('form-status');
+  var submitBtn = form.querySelector('button[type="submit"]');
+
+  /* Permite llegar con el servicio ya elegido: presupuesto.html?servicio=nfc */
+  var serviceSelect = form.elements.servicio;
+  var preset = new URLSearchParams(location.search).get('servicio');
+  if (preset && serviceSelect.querySelector('option[value="' + preset.replace(/[^a-z]/g, '') + '"]')) serviceSelect.value = preset;
+
+  function setError(name, key) {
+    var err = document.getElementById('err-' + name);
+    var field = form.elements[name];
+    err.dataset.key = key || '';
+    err.textContent = key ? t(key) : '';
+    field.setAttribute('aria-invalid', String(!!key));
+  }
+
+  function validate() {
+    var data = new FormData(form);
+    var checks = [
+      ['servicio', !!data.get('servicio'), 'e.service'],
+      ['nombre', String(data.get('nombre')).trim().length >= 2, 'e.name'],
+      ['telefono', String(data.get('telefono')).replace(/\D/g, '').length >= 9, 'e.phone'],
+      ['email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.get('email')).trim()), 'e.email']
+    ];
+    var firstBad = null;
+    checks.forEach(function (c) {
+      setError(c[0], c[1] ? '' : c[2]);
+      if (!c[1] && !firstBad) firstBad = c[0];
+    });
+    if (firstBad) form.elements[firstBad].focus();
+    return !firstBad;
+  }
+
+  /* Tras un primer intento, corrige los errores mientras se escribe. */
+  var tried = false;
+  form.addEventListener('input', function () { if (tried) validate(); });
+  form.addEventListener('change', function () { if (tried) validate(); });
+
+  function showStatus(text, isError) {
+    statusEl.textContent = text;
+    statusEl.classList.toggle('is-error', !!isError);
+    statusEl.hidden = false;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    tried = true;
+    if (!validate()) return;
+
+    var data = new FormData(form);
+    var service = serviceSelect.options[serviceSelect.selectedIndex].text;
+    /* Las claves son las etiquetas que verás en el email. */
+    var payload = {
+      access_key: ACCESS_KEY,
+      subject: t('mail.subject') + ' · ' + service,
+      from_name: 'javier.dev',
+      botcheck: form.elements.botcheck.checked,
+      'Servicio': service,
+      'Nombre': String(data.get('nombre')).trim(),
+      'Teléfono': String(data.get('telefono')).trim(),
+      email: String(data.get('email')).trim(),
+      'Necesidad': String(data.get('mensaje')).trim() || '-',
+      'Idioma': root.lang
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.firstChild.textContent = t('q.sending');
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
+    }).then(function (json) {
+      if (!json.success) throw new Error(json.message);
+      form.reset();
+      tried = false;
+      showStatus(t('ok.sent'));
+    }).catch(function () {
+      showStatus(t('ko.sent') + TO_EMAIL + '.', true);
+    }).then(function () {
+      submitBtn.disabled = false;
+      submitBtn.firstChild.textContent = t('q.submit');
+    });
+  });
+})();
+</script>
+</body>
+</html>

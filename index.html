@@ -438,7 +438,7 @@
       </div>
       <div class="card service-cta">
         <p data-i18n="serv.cta">¿Tienes una idea para tu negocio? Cuéntamela y te preparo un presupuesto sin compromiso.</p>
-        <a class="btn btn-primary" href="#contacto"><span data-i18n="serv.ctaBtn">Pedir presupuesto</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-primary quote-link" href="presupuesto.html" target="_blank" rel="noopener"><span data-i18n="serv.ctaBtn">Pedir presupuesto</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg><span class="sr-only" data-i18n="a11y.newTab">(se abre en una pestaña nueva)</span></a>
       </div>
     </div>
   </section>
@@ -806,6 +806,8 @@
     });
     /* El botón de idioma está escrito en el idioma al que cambia. */
     langBtn.lang = lang === 'en' ? 'es' : 'en';
+    /* El formulario de presupuesto se abre en el mismo idioma. */
+    document.querySelectorAll('.quote-link').forEach(function (a) { a.href = 'presupuesto.html?lang=' + lang; });
   }
 
   function store(key, value) {
